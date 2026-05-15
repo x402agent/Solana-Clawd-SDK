@@ -6,8 +6,8 @@
  */
 
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { getAssociatedTokenAddress, getAccount, TokenAccountNotFoundError } from '@solana/spl-token';
 import { CLAWD_MINT, USDC_MINT, USDC_DECIMALS, CLAWD_DECIMALS } from '../config.js';
+import { getAssociatedTokenAddress, readTokenAccountAmount } from './spl-token-lite.js';
 
 export interface Balances {
   sol: number;
@@ -18,11 +18,11 @@ export interface Balances {
 
 async function tokenBalance(conn: Connection, owner: PublicKey, mint: PublicKey, decimals: number): Promise<number> {
   try {
-    const ata = await getAssociatedTokenAddress(mint, owner, true);
-    const acct = await getAccount(conn, ata);
-    return Number(acct.amount) / Math.pow(10, decimals);
+    const ata = getAssociatedTokenAddress(mint, owner);
+    const acct = await conn.getAccountInfo(ata);
+    if (!acct) return 0;
+    return Number(readTokenAccountAmount(acct.data)) / Math.pow(10, decimals);
   } catch (err) {
-    if (err instanceof TokenAccountNotFoundError) return 0;
     return 0;
   }
 }

@@ -16,10 +16,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Keypair, Connection, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import {
-  createAssociatedTokenAccountInstruction,
+  createAssociatedTokenAccountIdempotentInstruction,
   createTransferInstruction,
   getAssociatedTokenAddress,
-} from '@solana/spl-token';
+} from '../identity/spl-token-lite.js';
 import { spawnOnchain } from '../identity/spawn-onchain.js';
 import { CLAWD_MINT, USDC_MINT } from '../config.js';
 import { recordSpawnling } from '../state/database.js';
@@ -130,10 +130,9 @@ async function fundChild(
   ] as [string, bigint][]) {
     if (amount <= 0n) continue;
     const mint = new PublicKey(mintStr);
-    const fromAta = await getAssociatedTokenAddress(mint, payer.publicKey, true);
-    const toAta = await getAssociatedTokenAddress(mint, childPda, true);
-    // Create the child's ATA if needed (idempotent if it already exists; the tx will fail and we retry without).
-    tx.add(createAssociatedTokenAccountInstruction(payer.publicKey, toAta, childPda, mint));
+    const fromAta = getAssociatedTokenAddress(mint, payer.publicKey);
+    const toAta = getAssociatedTokenAddress(mint, childPda);
+    tx.add(createAssociatedTokenAccountIdempotentInstruction(payer.publicKey, toAta, childPda, mint));
     tx.add(createTransferInstruction(fromAta, toAta, payer.publicKey, amount));
   }
 
