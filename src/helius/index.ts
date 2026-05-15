@@ -10,6 +10,7 @@
  */
 
 import { EventEmitter } from "node:events";
+import WebSocket from "ws";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -153,7 +154,7 @@ type WsMessage = {
 export class HeliusListener extends EventEmitter {
   private readonly apiKey: string;
   private readonly wsUrl: string;
-  private ws: import("ws").WebSocket | null = null;
+  private ws: WebSocket | null = null;
   private rpcId = 1;
   private pendingRpc = new Map<number, (result: unknown) => void>();
   private subscriptions = new Map<number, (data: unknown) => void>();
@@ -171,9 +172,8 @@ export class HeliusListener extends EventEmitter {
   }
 
   async connect(): Promise<void> {
-    const { WebSocket } = await HeliusListener._loadWs();
     return new Promise((resolve, reject) => {
-      const ws = new WebSocket(this.wsUrl) as import("ws").WebSocket;
+      const ws = new WebSocket(this.wsUrl);
       this.ws = ws;
 
       ws.on("open", () => {
@@ -182,7 +182,7 @@ export class HeliusListener extends EventEmitter {
         resolve();
       });
 
-      ws.on("message", (raw: Buffer) => {
+      ws.on("message", (raw: WebSocket.Data) => {
         try {
           const msg = JSON.parse(raw.toString()) as WsMessage;
           // RPC response (subscribe call)
@@ -211,20 +211,6 @@ export class HeliusListener extends EventEmitter {
         this._scheduleReconnect();
       });
     });
-  }
-
-  private static async _loadWs(): Promise<typeof import("ws")> {
-    try {
-      return await import("ws");
-    } catch {
-      // Node 22+ has native WebSocket — create a minimal shim
-      if (typeof globalThis.WebSocket !== "undefined") {
-        return { WebSocket: globalThis.WebSocket } as unknown as typeof import("ws");
-      }
-      throw new Error(
-        'WebSocket not available. Install the "ws" package: npm install ws',
-      );
-    }
   }
 
   private _scheduleReconnect(): void {

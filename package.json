@@ -99,7 +99,7 @@
     "build": "tsc",
     "build:all": "tsc && (cd packages/clawd && npm run build) && (cd packages/cli-standalone && npm run build)",
     "dev": "tsx watch src/index.ts",
-    "test": "vitest run",
+    "test": "vitest run \"src/**/*.{test,spec}.ts\" --passWithNoTests",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },

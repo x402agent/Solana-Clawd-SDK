@@ -134,7 +134,7 @@ async function buildPaymentHeader(
 export function wrapFetchWithX402(fetchFn: typeof fetch): typeof fetch {
   const cfg = getX402Config();
 
-  return async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+  const wrapped = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const firstResponse = await fetchFn(input, init);
 
     // Only intercept 402
@@ -186,6 +186,8 @@ export function wrapFetchWithX402(fetchFn: typeof fetch): typeof fetch {
 
     return paidResponse;
   };
+
+  return wrapped as typeof fetch;
 }
 
 // ── Reporting ───────────────────────────────────────────────────────────────
