@@ -45,7 +45,7 @@ import {
 } from "../utils/pda.js";
 import { designDefaultAgentCurve } from "../bonding-curve/adaptive-curve.js";
 import { defaultAgentTokenConfig } from "../token/token-factory.js";
-import { buildPTokenLaunchInstructions } from "../token/ptoken-launcher.ts.js";
+import { buildPTokenLaunchInstructions } from "../token/ptoken-launcher.js";
 
 // ─── Agent Launch ─────────────────────────────────────────────────────────────
 
