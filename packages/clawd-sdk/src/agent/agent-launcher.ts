@@ -12,40 +12,38 @@
  * is cryptographically bound to the three laws of autonomous agents.
  */
 
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
-  Connection,
   Keypair,
   PublicKey,
   SystemProgram,
   SYSVAR_RENT_PUBKEY,
+  type Connection,
   type TransactionInstruction,
 } from "@solana/web3.js";
-import { createHash } from "crypto";
-import { readFileSync } from "fs";
-import { join } from "path";
 import type {
-  AgentLaunchParams,
-  AgentBinding,
   AgentCurveConfig,
-  VaultConfig,
+  AgentLaunchParams,
   LaunchResult,
   SdkInstructions,
+  VaultConfig,
 } from "../types/index.js";
 import {
+  AgentCapability,
   CLAWD_PROTOCOL_PROGRAM_ID,
   DBC_PROGRAM_ID,
+  DEFAULT_EPOCH_DURATION_SLOTS,
   TOKEN_2022_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
-  DEFAULT_EPOCH_DURATION_SLOTS,
-  AgentCapability,
 } from "../constants.js";
+import { designDefaultAgentCurve } from "../bonding-curve/adaptive-curve.js";
+import { defaultAgentTokenConfig } from "../token/token-factory.js";
 import {
   deriveAgentBindingPda,
   deriveVaultPda,
 } from "../utils/pda.js";
-import { designDefaultAgentCurve } from "../bonding-curve/adaptive-curve.js";
-import { defaultAgentTokenConfig } from "../token/token-factory.js";
-import { buildPTokenLaunchInstructions } from "../token/ptoken-launcher.js";
 
 // ─── Agent Launch ─────────────────────────────────────────────────────────────
 
