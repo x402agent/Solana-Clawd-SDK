@@ -8,6 +8,7 @@ import ChatInterface from "./ui/components/chat-interface.js";
 import { getSettingsManager } from "./utils/settings-manager.js";
 import { ConfirmationService } from "./utils/confirmation-service.js";
 import { createMCPCommand } from "./commands/mcp.js";
+import { createExamplesCommand } from "./commands/examples.js";
 import type { ChatCompletionMessageParam } from "openai/resources/chat";
 
 // Load environment variables
@@ -469,5 +470,8 @@ gitCommand
 
 // MCP command
 program.addCommand(createMCPCommand());
+
+// Examples command
+program.addCommand(createExamplesCommand());
 
 program.parse();
