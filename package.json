@@ -49,6 +49,26 @@
     "./types/index.js": {
       "types": "./dist/types/index.d.ts",
       "default": "./dist/types/index.js"
+    },
+    "./state/app-state.js": {
+      "types": "./dist/state/app-state.d.ts",
+      "default": "./dist/state/app-state.js"
+    },
+    "./helius/index.js": {
+      "types": "./dist/helius/index.d.ts",
+      "default": "./dist/helius/index.js"
+    },
+    "./services/x402/index.js": {
+      "types": "./dist/services/x402/index.d.ts",
+      "default": "./dist/services/x402/index.js"
+    },
+    "./services/x402/types.js": {
+      "types": "./dist/services/x402/types.d.ts",
+      "default": "./dist/services/x402/types.js"
+    },
+    "./buddy/index.js": {
+      "types": "./dist/buddy/index.d.ts",
+      "default": "./dist/buddy/index.js"
     }
   },
   "bin": {
@@ -99,11 +119,13 @@
     "simple-git": "^3.24.0",
     "tweetnacl": "^1.0.3",
     "ulid": "^2.3.0",
+    "ws": "^8.18.0",
     "yaml": "^2.4.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.0",
     "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.12",
     "tsx": "^4.7.0",
     "typescript": "^5.9.3",
     "vitest": "^2.0.0"
