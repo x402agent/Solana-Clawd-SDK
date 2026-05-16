@@ -76,9 +76,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://solanaclawd.com"
+    "url": "https://github.com/x402agent/openclawd.git"
   },
   "homepage": "https://solanaclawd.com",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "keywords": [
     "autonomous-agent",
     "sovereign-ai",
