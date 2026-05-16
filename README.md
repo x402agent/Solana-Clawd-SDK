@@ -132,6 +132,8 @@ openclawd-framework/
 ├── characters/                  🎭 Character definitions (clawd.json)
 ├── pay/                         💰 Payment side-projects + references
 ├── vendor/                      🏭 Vendored experiments
+├── automation/                  🤖 Runtime bootstrap, CI, constitution check
+├── data/                        📊 Programs map + p-token registry
 └── install.sh                   ⚡ One-shot curl installer
 ```
 
