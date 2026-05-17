@@ -1,4 +1,4 @@
-# @openclawd/wallet
+# @openclawdsolana/clawd-wallet
 
 **Privy-embedded Solana wallet + Grok-gated agentic trading + Jupiter swap aggregator.**
 
@@ -9,10 +9,10 @@ Part of the [OpenClawd](https://solanaclawd.com) framework.
 ## Install
 
 ```bash
-npm install @openclawd/wallet
+npm install @openclawdsolana/clawd-wallet
 ```
 
-[![npm](https://img.shields.io/npm/v/@openclawd/wallet)](https://www.npmjs.com/package/@openclawd/wallet)
+[![npm](https://img.shields.io/npm/v/@openclawdsolana/clawd-wallet)](https://www.npmjs.com/package/@openclawdsolana/clawd-wallet)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 ---
@@ -30,7 +30,7 @@ npm install @openclawd/wallet
 ## Quick start
 
 ```typescript
-import { ClawdWallet, AgenticWallet, SwapService } from "@openclawd/wallet";
+import { ClawdWallet, AgenticWallet, SwapService } from "@openclawdsolana/clawd-wallet";
 
 // Basic wallet
 const wallet = new ClawdWallet({ chain: "mainnet" });
@@ -69,6 +69,6 @@ SOLANA_RPC_URL=         # Solana RPC endpoint (default: mainnet-beta)
 
 ## Links
 
-- **npm:** https://www.npmjs.com/package/@openclawd/wallet
+- **npm:** https://www.npmjs.com/package/@openclawdsolana/clawd-wallet
 - **Homepage:** https://solanaclawd.com
 - **Token:** `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump`
