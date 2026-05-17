@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * IDL for the clawd_protocol Anchor program.
  *
