@@ -13,7 +13,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy agent code
-COPY agent.py tools.py ./
+COPY agent.py backrooms.py tools.py ./
 
 # API keys injected via Fly secrets at runtime (fly secrets set)
 # .env.local is NOT baked into the image — use fly secrets for security
