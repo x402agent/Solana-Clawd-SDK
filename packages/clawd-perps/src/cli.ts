@@ -10,9 +10,6 @@ const program = new Command()
 
 program.addCommand(buildPerpsCommand());
 
-// Top-level aliases for ergonomics
-program.addCommand(buildPerpsCommand().copyInheritedSettings(program).name("market").alias("m"), { hidden: true });
-
 program.parseAsync(process.argv).catch((err) => {
   console.error(err.message);
   process.exit(1);

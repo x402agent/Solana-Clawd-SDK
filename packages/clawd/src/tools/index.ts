@@ -12,3 +12,4 @@ export { PolymarketTool } from "./polymarket.js";
 export { BagsTool } from "./bags.js";
 export { KalshiTool } from "./kalshi.js";
 export { LeviathanTool, LEVIATHAN_TOOL_DEFS, type LeviathanToolName } from "./leviathan-tool.js";
+export { ClaWDPerps } from "@openclawdsolana/clawd-perps";
