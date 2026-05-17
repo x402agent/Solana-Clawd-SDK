@@ -78,3 +78,64 @@ The Cheshire Terminal server exposes a LiveKit webhook endpoint at `POST /api/li
 - Vision frames are sampled at ~1Hz from the first subscribed remote video track. `analyze_vision` always uses the latest.
 - The agent uses STT-driven turn detection (recommended for U3 Pro Streaming). `min_turn_silence=100`, `max_turn_silence=1000`.
 - For dictation of long entities like email or wallet addresses, raise `max_turn_silence` mid-stream via `stt.update_options(...)`.
+
+---
+
+## 🔁 Backrooms Mode — Three agents. One room. No exit.
+
+`backrooms.py` puts three AI agents in the same LiveKit room and lets them respond to each other indefinitely.
+
+| Agent | Role | Voice | LLM |
+| --- | --- | --- | --- |
+| **Clawd** | Oracle / analyst | Cartesia `BACKROOMS_CLAWD_VOICE` | GPT-4.1 (session pipeline) |
+| **Mayhem** | Rogue trader | Cartesia `BACKROOMS_MAYHEM_VOICE` | GPT-4.1 (sidecar) |
+| **Ghost** | The watcher | Cartesia `BACKROOMS_GHOST_VOICE` | GPT-4.1 (sidecar) |
+
+### The loop
+
+```
+human speaks
+  └→ Clawd responds (always)
+       └→ Mayhem reacts     (70% chance, 1–2s delay)
+            └→ Ghost observes   (40% chance, 2–4s delay)
+                 └→ Mayhem fires back (35% chance, 1–3s delay)
+                      └→ … until MAX_DEPTH or silence
+```
+Depth resets when the human speaks again.
+
+### Quick start
+
+```bash
+cd livekit-agent
+cp .env.example .env.local   # same keys as agent.py
+python backrooms.py dev
+```
+
+Connect via [LiveKit Agents Playground](https://agents-playground.livekit.io).
+
+### Env vars (backrooms-specific)
+
+| Var | Default | Notes |
+| --- | --- | --- |
+| `BACKROOMS_CLAWD_VOICE` | `9626c31c-…` | Cartesia voice ID for Clawd |
+| `BACKROOMS_MAYHEM_VOICE` | `e13cae5c-…` | Cartesia voice ID for Mayhem |
+| `BACKROOMS_GHOST_VOICE` | `79a125e8-…` | Cartesia voice ID for Ghost |
+| `BACKROOMS_MAX_DEPTH` | `3` | Max agent-to-agent turns per human input |
+| `BACKROOMS_MAYHEM_CHANCE` | `0.70` | Probability Mayhem responds after Clawd |
+| `BACKROOMS_GHOST_CHANCE` | `0.40` | Probability Ghost responds after Mayhem |
+| `LIVEKIT_AGENT_ID` | `clawd-backrooms` | Register this name in LiveKit Cloud |
+
+### Architecture
+
+Each character publishes its own `LocalAudioTrack` — Mayhem and Ghost as separate
+tracks on the main participant, Clawd through the `AgentSession` TTS pipeline.
+A `RoomConsciousness` object holds the shared transcript and routes events to
+the infinite recursion coordinator.
+
+### Docker
+
+```bash
+docker build -t clawd-backrooms .
+docker run --env-file .env.local -e LIVEKIT_AGENT_ID=clawd-backrooms clawd-backrooms \
+  python -u backrooms.py start
+```

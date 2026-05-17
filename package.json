@@ -159,6 +159,9 @@
     "clawd:start": "cd packages/clawd && node dist/index.js",
     "clawd:dev": "cd packages/clawd && npx tsx src/index.ts",
 
+    "backrooms:dev": "cd livekit-agent && python backrooms.py dev",
+    "backrooms:start": "cd livekit-agent && python backrooms.py start",
+
     "sdk:build": "cd packages/clawd-sdk && npm run build",
 
     "wallet:build": "cd packages/clawd-wallet && npm run build",
